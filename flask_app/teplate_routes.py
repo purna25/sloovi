@@ -26,16 +26,11 @@ def update_template(user, template_id):
     if request.headers['Content-Type'] == 'application/json':
         data = request.json
         try:
-            template = mongo.db.templates.find_one(_id= ObjectId(template_id), user_id= user['_id'])
-            if template:
-                template = mongo.db.templates.find_one_and_update(
-                    filter= {'_id': ObjectId(template_id), 'user_id': user['_id']},
-                    update= {'$set': data},
-                )
-                print(template)
-                return jsonify({'message': 'Template updated!'}), 200
-            else:
-                return jsonify({'message': 'Template not found!'}), 404
+            template = mongo.db.templates.find_one_and_update(
+                filter= {'_id': ObjectId(template_id), 'user_id': user['_id']},
+                update= {'$set': data},
+            )
+            return jsonify({'message': 'Template updated!'}), 200
         except Exception as e:
             return jsonify({'message': 'Template not found!'}), 404 
     else:
@@ -47,14 +42,10 @@ def update_template(user, template_id):
 def delete_template(user, template_id):
     if request.headers['Content-Type'] == 'application/json':
         try:
-            template = mongo.db.templates.find_one(_id= ObjectId(template_id), user_id= user['_id'])
-            if template:
-                template = mongo.db.templates.find_one_and_delete(
-                    filter= {'_id': ObjectId(template_id), 'user_id': user['_id']}
-                )
-                return jsonify({'message': 'Template deleted!'}), 200
-            else:
-                return jsonify({'message': 'Template not found!'}), 404
+            template = mongo.db.templates.find_one_and_delete(
+                filter= {'_id': ObjectId(template_id), 'user_id': user['_id']}
+            )
+            return jsonify({'message': 'Template deleted!'}), 200
         except Exception as e:
             return jsonify({'message': 'Template not found!'}), 404 
     else:
@@ -66,7 +57,6 @@ def delete_template(user, template_id):
 def insert_template(user):
     if request.headers['Content-Type'] == 'application/json':
         data = request.json
-        print(data)
         if data and data.get('template_name') and data.get('subject') and data.get('body'):
             template = mongo.db.templates.insert_one({
                 'template_name': data.get('template_name'),

@@ -2,3 +2,5 @@ Flask
 pymongo[srv]
 Flask-PyMongo
 PyJWT
+gunicorn
+python-dotenv

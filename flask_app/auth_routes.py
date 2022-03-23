@@ -24,13 +24,8 @@ def register():
                     'email': data.get('email'),
                     'password': hashed_password
                 })
-                token = jwt.encode({
-                    'public_id': str(user.inserted_id),
-                    'iat': datetime.utcnow(),
-                    'exp': datetime.utcnow() + timedelta(hours=3)
-                }, app.config['SECRET_KEY'])
 
-                return jsonify({'message': 'User created!', 'token': token}), 201
+                return jsonify({'message': 'User created!'}), 201
         else:
             return jsonify({'message': 'Email and password are required!'}), 400
     else:
@@ -53,6 +48,8 @@ def login():
                     'exp': datetime.utcnow() + timedelta(hours=3)
                 }, app.config['SECRET_KEY'])
                 return jsonify({'message': 'User logged in!', 'token': token}), 200
+            else:
+                return jsonify({'message': 'Incorrect Password'})
         else:
             return jsonify({'message': 'Email and password are required!'}), 400
     else:

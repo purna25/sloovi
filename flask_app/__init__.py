@@ -1,11 +1,13 @@
 from flask import Flask, request, jsonify
 from flask_pymongo import PyMongo
+import os
+from dotenv import load_dotenv
 
+
+load_dotenv()
 app = Flask(__name__)
-username = 'purna1'
-pwd = 'GtGeyiMpTUj6ktAN'
-app.config['MONGO_URI'] = f'mongodb+srv://{username}:{pwd}@cluster0.ztuby.mongodb.net/sloovi?retryWrites=true&w=majority'
-app.config['SECRET_KEY'] = "sfvgsvlfsbfshjbuy"
+app.config['MONGO_URI'] = os.getenv('MONGO_CONNECTION_STRING')
+app.config['SECRET_KEY'] = os.getenv('APP_SECRET')
 mongo = PyMongo(app)
 
 
